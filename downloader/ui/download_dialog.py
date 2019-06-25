@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/allan/PycharmProjects/pyqt/download_dialog.ui'
+# Form implementation generated from reading ui file '/home/allan/PycharmProjects/pyqt/core/ui/download_dialog.ui'
 #
 # Created by: PyQt5 UI code generator 5.12.2
 #
@@ -23,9 +23,9 @@ class Ui_DownloadDialog(object):
         self.progressBar.setProperty("value", 24)
         self.progressBar.setObjectName("progressBar")
         self.buttonBox = QtWidgets.QDialogButtonBox(DownloadDialog)
-        self.buttonBox.setGeometry(QtCore.QRect(100, 200, 166, 25))
+        self.buttonBox.setGeometry(QtCore.QRect(144, 210, 80, 25))
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
-        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
+        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel)
         self.buttonBox.setObjectName("buttonBox")
         self.label = QtWidgets.QLabel(DownloadDialog)
         self.label.setGeometry(QtCore.QRect(80, 30, 201, 51))

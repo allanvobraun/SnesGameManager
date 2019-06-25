@@ -1,14 +1,15 @@
-from PyQt5.QtWidgets import QDesktopWidget, QFileDialog, QAbstractItemView
-from PyQt5.QtGui import QStandardItem, QStandardItemModel, QIcon
-from PyQt5.QtCore import Qt
-from core.ui.qtwindow import *
-from core.ui.download_dialog import *
+import glob  # Usado para pegar o caminho do arquivo mais facilmente
+from json import dump, load
 from os import getcwd, mkdir
 from os.path import expanduser
 from subprocess import run
-import glob  # Usado para pegar o caminho do arquivo mais facilmente
-from json import dump, load
 
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QStandardItem, QStandardItemModel, QIcon
+from PyQt5.QtWidgets import QDesktopWidget, QFileDialog, QAbstractItemView
+
+from downloader.downloads_app import DownloadDialog
+from core.ui.qtwindow import *
 from downloader.format_download import *
 
 
@@ -23,19 +24,20 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         # tipos de arquivos suportados pelo emulador
         self.roms_extensions = ("7z", "bin", "bs", "fig", "mgd", "sfc", "smc", "swc", "zip")
-        self.root = getcwd()   # detect the current working directory
+        self.root = getcwd()  # detect the current working directory
         self.imgs_folder = self.root + "/" + "covers"
         self.games_folder = ""
         self.roms_path = []  # caminho das roms carregadas pelo list_roms
         self.roms = []  # nomes das roms
         self.select_game = ""  # rom selecionada
         self.model = None  # modelo dos items da lista
+        self.dwnl_dialog = DownloadDialog(self.roms, parent=self)
 
         # conectores de widgets para metodos
         self.listGamesbox.setEditTriggers(QAbstractItemView.NoEditTriggers)  # torna a lista de games não editavel
         self.btPlay.clicked.connect(self.play_game)  # botão jogar
         self.actionOpen_roms_folder.triggered.connect(self.get_folder)  # ação para abrir o folder
-        self.actionDownload_Game_Covers.triggered.connect(self.get_game_covers)  # baixar as capas
+        self.actionDownload_Game_Covers.triggered.connect(self.download_game_covers)  # baixar as capas
         self.btReload.clicked.connect(self.update_listbox)  # botao de recarregar
         self.listGamesbox.clicked.connect(self.game_selected)  # seletor de games
 
@@ -43,9 +45,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         QtCore.QTimer.singleShot(50, self.load_folder)  # carrega informações do json
         QtCore.QTimer.singleShot(50, self.create_img_dir)  # cria diretorio
 
-    def get_game_covers(self):  # Faz o dowload de cada capa da rom
-        for rom in self.roms:
-            download_cover(rom, out_path="covers", allow_dups=False)
+    def download_game_covers(self):  # Requisita o download de cada capa da rom
+        self.dwnl_dialog.set_roms(self.roms)
+        self.dwnl_dialog.start_download()
         self.update_listbox()
 
     def play_game(self):  # roda o game selecionado

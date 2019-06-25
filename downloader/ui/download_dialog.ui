@@ -35,9 +35,9 @@
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
     <rect>
-     <x>100</x>
-     <y>200</y>
-     <width>166</width>
+     <x>144</x>
+     <y>210</y>
+     <width>80</width>
      <height>25</height>
     </rect>
    </property>
@@ -45,7 +45,7 @@
     <enum>Qt::Horizontal</enum>
    </property>
    <property name="standardButtons">
-    <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+    <set>QDialogButtonBox::Cancel</set>
    </property>
   </widget>
   <widget class="QLabel" name="label">
