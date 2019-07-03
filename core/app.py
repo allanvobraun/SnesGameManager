@@ -2,6 +2,7 @@ import glob  # Usado para pegar o caminho do arquivo mais facilmente
 from json import dump, load
 from os import getcwd, mkdir
 from os.path import expanduser
+from shutil import  copy2
 from subprocess import run
 
 from PyQt5.QtCore import Qt
@@ -44,6 +45,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # chamadas de função
         QtCore.QTimer.singleShot(50, self.load_folder)  # carrega informações do json
         QtCore.QTimer.singleShot(50, self.create_img_dir)  # cria diretorio
+        QtCore.QTimer.singleShot(50, self.copy_df_img)  # copia a imagem padrão para o diretorio
 
     def download_game_covers(self):  # Requisita o download de cada capa da rom
         self.dwnl_dialog.set_roms(self.roms)
@@ -61,6 +63,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             mkdir(self.imgs_folder)
         except FileExistsError:
             pass
+
+    def copy_df_img(self):
+        copy2(self.root + "/core/ui/resources/none.png", self.imgs_folder)
+        self.update_listbox()
 
     def save_folder(self):  # salva o caminho do arquivo
         with open('save_path.json', 'w') as arquivo:
