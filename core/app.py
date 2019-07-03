@@ -53,7 +53,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def play_game(self):  # roda o game selecionado
         if self.select_game != "":
             game = self.games_folder + "/" + self.select_game
-            run("snes9x-gtk '{}'".format(game), shell=True)
+            # run("snes9x-gtk '{}'".format(game), shell=True)
+            run("zsnes '{}'".format(game), shell=True)
 
     def create_img_dir(self):  # cria o diretorio dascovers somente se não exixtir
         try:
@@ -73,7 +74,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         except (ValueError, OSError):
             self.games_folder = ""
 
-        self.update_listbox()
+        self.update_listbox() 
 
     def get_folder(self):  # Função para procurar uma pasta
         self.games_folder = QFileDialog.getExistingDirectory(self,  # Abre o explorador de arquivos

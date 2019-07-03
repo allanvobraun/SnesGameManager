@@ -39,16 +39,22 @@
        </size>
       </property>
       <property name="resizeMode">
-       <enum>QListView::Fixed</enum>
+       <enum>QListView::Adjust</enum>
       </property>
       <property name="spacing">
-       <number>60</number>
+       <number>200</number>
       </property>
       <property name="viewMode">
        <enum>QListView::ListMode</enum>
       </property>
+      <property name="modelColumn">
+       <number>0</number>
+      </property>
       <property name="uniformItemSizes">
-       <bool>true</bool>
+       <bool>false</bool>
+      </property>
+      <property name="batchSize">
+       <number>5000</number>
       </property>
      </widget>
     </item>
