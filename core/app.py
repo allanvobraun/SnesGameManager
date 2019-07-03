@@ -1,8 +1,10 @@
 import glob  # Usado para pegar o caminho do arquivo mais facilmente
 from json import dump, load
+import sys
+import os
 from os import getcwd, mkdir
 from os.path import expanduser
-from shutil import  copy2
+from shutil import copy2
 from subprocess import run
 
 from PyQt5.QtCore import Qt
@@ -12,6 +14,7 @@ from PyQt5.QtWidgets import QDesktopWidget, QFileDialog, QAbstractItemView
 from downloader.downloads_app import DownloadDialog
 from core.ui.qtwindow import *
 from downloader.format_download import *
+from path_tools.pathing import *
 
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
@@ -64,8 +67,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         except FileExistsError:
             pass
 
-    def copy_df_img(self):
-        copy2(self.root + "/core/ui/resources/none.png", self.imgs_folder)
+    def copy_df_img(self):  # copia imagem padrão de capa para o diretorio de imagenspip
+        file_path = resource_path("resources/none.png")  # Ação para o PyInstaller refenreciar corretamente o arquivo
+        copy2(file_path, self.imgs_folder)
         self.update_listbox()
 
     def save_folder(self):  # salva o caminho do arquivo
@@ -97,7 +101,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.roms_path.extend(glob.glob(self.games_folder + "/*." + file_type))
 
         print("Caminho das roms = {}".format(self.roms_path))
-        self.roms = self.format_rom_names(self.roms_path)  # salva somente o nome das roms
+        self.roms = path_to_roms(self.roms_path)  # salva somente o nome das roms
 
         # print(self.roms_path)
         # print(self.roms)
@@ -139,15 +143,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         qr.moveCenter(cp)
         # top left of rectangle becomes top left of window centering it
         self.move(qr.topLeft())
-
-    @staticmethod
-    def format_rom_names(rom_list):  # Função para extrair os nomes das roms de cada caminho
-        extracted_names = []
-        for path in rom_list:
-            name = path.split("/")[-1]
-            extracted_names.append(name)
-        return extracted_names
-
 
 # if __name__ == "__main__":
 #     my_app = QtWidgets.QApplication([])

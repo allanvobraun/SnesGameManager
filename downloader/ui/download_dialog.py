@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/allan/PycharmProjects/pyqt/core/ui/download_dialog.ui'
+# Form implementation generated from reading ui file '/home/allan/PycharmProjects/pyqt/downloader/ui/download_dialog.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.2
+# Created by: PyQt5 UI code generator 5.9.2
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
 
 class Ui_DownloadDialog(object):
     def setupUi(self, DownloadDialog):
@@ -49,8 +48,6 @@ class Ui_DownloadDialog(object):
         self.label.setText(_translate("DownloadDialog", "Downloading images"))
 
 
-
-
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
@@ -59,3 +56,4 @@ if __name__ == "__main__":
     ui.setupUi(DownloadDialog)
     DownloadDialog.show()
     sys.exit(app.exec_())
+
