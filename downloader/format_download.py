@@ -1,12 +1,20 @@
-from urllib.error import HTTPError
-from wget import download
+import requests
 from os.path import exists
-
+import os
+from main import ROOT_DIR
 
 # Modulo usado para baixar os arquivos de imagem, confome a demanda, do github
 # exemplo:
 # ACME Animation Factory.smc
 # https://raw.githubusercontent.com/ZeroSuf3r/nintendo-games-icons/master/A/ACME%20Animation%20Factory%20(USA).png
+
+
+def path_to_roms(rom_list):  # Função para extrair os nomes das roms de cada caminho
+    extracted_names = []
+    for path in rom_list:
+        name = path.split("/")[-1]
+        extracted_names.append(name)
+    return extracted_names
 
 
 def rm_extension(rom_name):  # formata a string para remover a extensão do arquivo. Ex: " potato (U).smc" -> "potato"
@@ -88,26 +96,31 @@ def has_duplicate(rom_name, path):
 
 
 # função de alto nivel que faz download da capa do game, tendo em base o nome da rom não-formatado
-def download_cover(rom_name, out_path=None, allow_dups=True):
+def download_cover(rom_name, out_path="covers"):
 
-    if (out_path is not None) and (not allow_dups):  # Se não permitir arquivos duplicados
-        dup_flag = has_duplicate(rom_name, out_path)  # teste se tiver duplicatas
+    if not has_duplicate(rom_name, out_path):  # Se o arquivo ainda não exite
+
+        os.environ['REQUESTS_CA_BUNDLE'] = f"{ROOT_DIR}/certifi/cacert.pem"
+
+        img_link = generate_link(rom_name)  # gera o link da imagem a partir do nome da rom
+        response = requests.get(img_link)  # da um request no link
+
+        if response.status_code == 200:  # se o codigo de respota  for ok
+
+            file_name = format_gamename(rom_name)
+
+            with open(f"{out_path}/{file_name}", 'wb') as f:   # cria o arquivo
+                f.write(response.content)
+
+        elif response.status_code == 404:
+            print("ERROR 404 - LINK NOT FOUND")
+            return "ERROR 404 - LINK NOT FOUND"
+
+        else:
+            print("ERROR unknown")
+            return "ERROR unknown"
     else:
-        dup_flag = False
+        print("Duplicated file")
 
-    if not dup_flag:  # se tudo ok, baixe, se nao existe uma duplicata não permetida
-        img_link = generate_link(rom_name)
 
-        try:
-            download(img_link, out=out_path)
 
-        except HTTPError as error:
-            if error.code == 404:
-                print("ERROR 404 - LINK NOT FOUND")
-                return "ERROR 404 - LINK NOT FOUND"
-            else:
-                print("ERROR unknown")
-                return "ERROR unknown"
-    else:
-        print("Error duplicate file")
-        return "Error duplicate file"

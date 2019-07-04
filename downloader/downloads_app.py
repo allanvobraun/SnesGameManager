@@ -5,7 +5,7 @@ from math import floor
 from downloader.thread_fix import nongui
 from downloader.ui.download_dialog import *
 from downloader.format_download import download_cover
-
+from main import ROOT_DIR
 """
 Faz todo o processo para baixar as capas dos games
 """
@@ -39,7 +39,7 @@ class DowloadThread(QThread):  # Classe para gerenciar o processo de download
         for rom in self.roms:
             if self.break_loop:
                 break
-            download_cover(rom, out_path="covers", allow_dups=False)
+            download_cover(rom, out_path=f"{ROOT_DIR}/covers")
             # sleep(1)
             self.flare.downloaded.emit()
 

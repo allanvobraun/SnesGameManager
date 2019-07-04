@@ -1,8 +1,6 @@
 import glob  # Usado para pegar o caminho do arquivo mais facilmente
 from json import dump, load
-import sys
-import os
-from os import getcwd, mkdir
+from os import mkdir
 from os.path import expanduser
 from shutil import copy2
 from subprocess import run
@@ -11,10 +9,10 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QStandardItem, QStandardItemModel, QIcon
 from PyQt5.QtWidgets import QDesktopWidget, QFileDialog, QAbstractItemView
 
+
 from downloader.downloads_app import DownloadDialog
 from core.ui.qtwindow import *
 from downloader.format_download import *
-from path_tools.pathing import *
 
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
@@ -28,7 +26,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         # tipos de arquivos suportados pelo emulador
         self.roms_extensions = ("7z", "bin", "bs", "fig", "mgd", "sfc", "smc", "swc", "zip")
-        self.root = getcwd()  # detect the current working directory
+        self.root = ROOT_DIR  # detect the current working directory
+        print("\nDiretorio raiz")
+        print(self.root)
         self.imgs_folder = self.root + "/" + "covers"
         self.games_folder = ""
         self.roms_path = []  # caminho das roms carregadas pelo list_roms
@@ -68,17 +68,17 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             pass
 
     def copy_df_img(self):  # copia imagem padrão de capa para o diretorio de imagenspip
-        file_path = resource_path("resources/none.png")  # Ação para o PyInstaller refenreciar corretamente o arquivo
+        file_path = f"{ROOT_DIR}/resources/none.png"
         copy2(file_path, self.imgs_folder)
         self.update_listbox()
 
     def save_folder(self):  # salva o caminho do arquivo
-        with open('save_path.json', 'w') as arquivo:
+        with open(f'{ROOT_DIR}/save_path.json', 'w') as arquivo:
             dump({"path": self.games_folder}, arquivo)  # Grava o caminho em um json
 
     def load_folder(self):  # carrega o caminho especificado pelo json
         try:
-            with open("save_path.json", "r") as json_file:
+            with open(f"{ROOT_DIR}/save_path.json", "r") as json_file:
                 data = load(json_file)
                 self.games_folder = data["path"]
         except (ValueError, OSError):
@@ -110,12 +110,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.model = QStandardItemModel(self.listGamesbox)
 
         for item in self.roms:
-            img_file_path = "covers/" + format_gamename(item)
+            img_file_path = ROOT_DIR + "/covers/" + format_gamename(item)
 
             if exists(img_file_path):
                 game_icon = QIcon(img_file_path)
             else:
-                game_icon = QIcon("covers/none.png")
+                game_icon = QIcon(ROOT_DIR + "/" + "covers/none.png")
 
             game = QStandardItem(game_icon, item)
             self.model.appendRow(game)
