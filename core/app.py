@@ -27,15 +27,18 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # tipos de arquivos suportados pelo emulador
         self.roms_extensions = ("7z", "bin", "bs", "fig", "mgd", "sfc", "smc", "swc", "zip")
         self.root = ROOT_DIR  # detect the current working directory
-        print("\nDiretorio raiz")
-        print(self.root)
         self.imgs_folder = self.root + "/" + "covers"
+        self.resources_folder = f"{ROOT_DIR}/resources"
         self.games_folder = ""
         self.roms_path = []  # caminho das roms carregadas pelo list_roms
         self.roms = []  # nomes das roms
         self.select_game = ""  # rom selecionada
         self.model = None  # modelo dos items da lista
         self.dwnl_dialog = DownloadDialog(self.roms, parent=self)
+        self.app_icon = QtGui.QIcon()
+        self.app_icon.addFile(f'{self.resources_folder}/icon.png', QtCore.QSize(256, 256))
+        QtWidgets.QMainWindow.setWindowIcon(self, self.app_icon)
+        self.setWindowIcon(self.app_icon)
 
         # conectores de widgets para metodos
         self.listGamesbox.setEditTriggers(QAbstractItemView.NoEditTriggers)  # torna a lista de games não editavel
@@ -67,8 +70,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         except FileExistsError:
             pass
 
-    def copy_df_img(self):  # copia imagem padrão de capa para o diretorio de imagenspip
-        file_path = f"{ROOT_DIR}/resources/none.png"
+    def copy_df_img(self):  # copia imagem padrão de capa para o diretorio de imagens
+        file_path = f"{self.resources_folder}/none.png"
         copy2(file_path, self.imgs_folder)
         self.update_listbox()
 
