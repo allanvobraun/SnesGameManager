@@ -97,30 +97,28 @@ def has_duplicate(rom_name, path):
 
 # função de alto nivel que faz download da capa do game, tendo em base o nome da rom não-formatado
 def download_cover(rom_name, out_path="covers"):
+    file_name = format_gamename(rom_name)
 
     if not has_duplicate(rom_name, out_path):  # Se o arquivo ainda não exite
 
-        os.environ['REQUESTS_CA_BUNDLE'] = f"{ROOT_DIR}/certifi/cacert.pem"
+        os.environ['REQUESTS_CA_BUNDLE'] = f"{ROOT_DIR}/certifi/cacert.pem"  # Certificado para download
 
         img_link = generate_link(rom_name)  # gera o link da imagem a partir do nome da rom
         response = requests.get(img_link)  # da um request no link
 
         if response.status_code == 200:  # se o codigo de respota  for ok
 
-            file_name = format_gamename(rom_name)
-
             with open(f"{out_path}/{file_name}", 'wb') as f:   # cria o arquivo
                 f.write(response.content)
+                print(f"{file_name} has suceful downloaded")
 
         elif response.status_code == 404:
-            print("ERROR 404 - LINK NOT FOUND")
-            return "ERROR 404 - LINK NOT FOUND"
+            print(f"On download of {file_name} a error has ocurred -> ERROR 404 - LINK NOT FOUND")
 
         else:
-            print("ERROR unknown")
-            return "ERROR unknown"
+            print(f"On download of {file_name} a error has ocurred -> ERROR unknown")
     else:
-        print("Duplicated file")
+        print(f"On download of {file_name} a error has ocurred -> ERROR File already exists")
 
 
 

@@ -103,7 +103,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         for file_type in self.roms_extensions:  # Adiciona o caminho absoluto de cada rom a lista
             self.roms_path.extend(glob.glob(self.games_folder + "/*." + file_type))
 
-        print("Caminho das roms = {}".format(self.roms_path))
         self.roms = path_to_roms(self.roms_path)  # salva somente o nome das roms
 
         # print(self.roms_path)

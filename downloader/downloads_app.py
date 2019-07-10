@@ -24,7 +24,7 @@ class DowloadThread(QThread):  # Classe para gerenciar o processo de download
         self.flare = Flager()
 
     def __del__(self):
-        print("deletou")
+        print("Tread finished")
         self.wait()
 
     def break_thread(self):
@@ -83,6 +83,8 @@ class DownloadDialog(QDialog, Ui_DownloadDialog):  # Classe do popup de download
 
         if self.percent == 100:
             self.change_label("Download complete")
+            sleep(1)
+            self.close()
 
     def change_label(self, txt):  # Troca o texto do dialog
         self.label.setText(txt)
