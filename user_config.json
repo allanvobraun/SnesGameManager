@@ -1,0 +1,35 @@
+{
+  "roms_path": "",
+  "emulators": [
+    "Zsnes",
+    "Higan",
+    "Snes9x",
+    "Custom"
+  ],
+  "emulators_config": {
+    "Zsnes": {
+      "default_command": "zsnes",
+      "custom_command": "",
+      "use_default_command": true,
+      "default_emulator": true
+    },
+    "Higan": {
+      "default_command": "higan",
+      "custom_command": "",
+      "use_default_command": true,
+      "default_emulator": false
+    },
+    "Snes9x": {
+      "default_command": "snes9x-gtk",
+      "custom_command": "",
+      "use_default_command": true,
+      "default_emulator": false
+    },
+    "Custom": {
+      "default_command": "",
+      "custom_command": "",
+      "use_default_command": false,
+      "default_emulator": false
+    }
+  }
+}

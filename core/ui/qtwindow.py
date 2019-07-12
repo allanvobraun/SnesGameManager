@@ -55,6 +55,8 @@ class Ui_MainWindow(object):
         self.menuOp_es.setObjectName("menuOp_es")
         self.menuFunctions = QtWidgets.QMenu(self.menubar)
         self.menuFunctions.setObjectName("menuFunctions")
+        self.menuSettings = QtWidgets.QMenu(self.menubar)
+        self.menuSettings.setObjectName("menuSettings")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -63,11 +65,15 @@ class Ui_MainWindow(object):
         self.actionOpen_roms_folder.setObjectName("actionOpen_roms_folder")
         self.actionDownload_Game_Covers = QtWidgets.QAction(MainWindow)
         self.actionDownload_Game_Covers.setObjectName("actionDownload_Game_Covers")
+        self.actionEmulator_config = QtWidgets.QAction(MainWindow)
+        self.actionEmulator_config.setObjectName("actionEmulator_config")
         self.menuOp_es.addSeparator()
         self.menuOp_es.addAction(self.actionOpen_roms_folder)
         self.menuFunctions.addAction(self.actionDownload_Game_Covers)
+        self.menuSettings.addAction(self.actionEmulator_config)
         self.menubar.addAction(self.menuOp_es.menuAction())
         self.menubar.addAction(self.menuFunctions.menuAction())
+        self.menubar.addAction(self.menuSettings.menuAction())
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -79,9 +85,11 @@ class Ui_MainWindow(object):
         self.btReload.setText(_translate("MainWindow", "Reload List"))
         self.menuOp_es.setTitle(_translate("MainWindow", "File"))
         self.menuFunctions.setTitle(_translate("MainWindow", "Functions"))
+        self.menuSettings.setTitle(_translate("MainWindow", "Settings"))
         self.actionOpen_roms_folder.setText(_translate("MainWindow", "Open roms folder"))
         self.actionOpen_roms_folder.setToolTip(_translate("MainWindow", "Abre o diretorio das roms"))
         self.actionDownload_Game_Covers.setText(_translate("MainWindow", "Download Game Covers"))
+        self.actionEmulator_config.setText(_translate("MainWindow", "Emulator config"))
 
 
 if __name__ == "__main__":

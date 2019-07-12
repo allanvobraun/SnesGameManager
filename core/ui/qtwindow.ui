@@ -112,8 +112,15 @@
     </property>
     <addaction name="actionDownload_Game_Covers"/>
    </widget>
+   <widget class="QMenu" name="menuSettings">
+    <property name="title">
+     <string>Settings</string>
+    </property>
+    <addaction name="actionEmulator_config"/>
+   </widget>
    <addaction name="menuOp_es"/>
    <addaction name="menuFunctions"/>
+   <addaction name="menuSettings"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionOpen_roms_folder">
@@ -127,6 +134,11 @@
   <action name="actionDownload_Game_Covers">
    <property name="text">
     <string>Download Game Covers</string>
+   </property>
+  </action>
+  <action name="actionEmulator_config">
+   <property name="text">
+    <string>Emulator config</string>
    </property>
   </action>
  </widget>

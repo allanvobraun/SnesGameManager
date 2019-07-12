@@ -48,6 +48,7 @@ class DownloadDialog(QDialog, Ui_DownloadDialog):  # Classe do popup de download
     def __init__(self, roms, parent=None):
         QDialog.__init__(self, parent)
         self.setupUi(self)
+        self.setFixedSize(self.width(), self.height())
 
         # atributos
         self.roms = roms
