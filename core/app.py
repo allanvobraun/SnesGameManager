@@ -7,7 +7,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QStandardItem, QStandardItemModel, QIcon
 from PyQt5.QtWidgets import QDesktopWidget, QFileDialog, QAbstractItemView, QMenu
 
-from config.json_handler import get_obj_value, write_folder,  get_default_emulator_command
+from config.json_handler import get_obj_value, write_folder
 from downloader.downloads_app import DownloadDialog
 from config.emuConfig_app import EmuConfigDialog, EmulatorConfigs
 from core.ui.qtwindow import *
@@ -50,7 +50,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.listGamesbox.setEditTriggers(QAbstractItemView.NoEditTriggers)  # torna a lista de games não editavel
 
         # conectores de widgets para metodos
-        self.btPlay.clicked.connect(self.play_game)  # botão jogar
+        self.btPlay.clicked.connect(lambda: self.play_game(emulator="Default"))  # botão jogar
         self.actionOpen_roms_folder.triggered.connect(self.get_folder)  # ação para abrir o folder
         self.actionDownload_Game_Covers.triggered.connect(self.download_game_covers)  # baixar as capas
         self.actionEmulator_config.triggered.connect(self.configurate_emulator)  # configurações do emulador
