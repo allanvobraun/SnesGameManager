@@ -40,7 +40,6 @@ class DowloadThread(QThread):  # Classe para gerenciar o processo de download
             if self.break_loop:
                 break
             download_cover(rom, out_path=f"{ROOT_DIR}/covers")
-            # sleep(1)
             self.flare.downloaded.emit()
 
 
@@ -65,14 +64,12 @@ class DownloadDialog(QDialog, Ui_DownloadDialog):  # Classe do popup de download
     def closeEvent(self, *args, **kwargs):  # evento para fechar o dialog
         super(QDialog, self).closeEvent(*args, **kwargs)
         self.cancel()
+        self.close()
+        del self
 
     def start_download(self):  # começa a fazer o downlaod
         self.show()
         self.th.run()
-
-    def set_roms(self, roms):  # Atuializa o atributo roms
-        self.roms = roms
-        self.__init__(self.roms)
 
     def cancel(self):  # quebra o processo de download
         self.th.break_thread()
@@ -84,7 +81,7 @@ class DownloadDialog(QDialog, Ui_DownloadDialog):  # Classe do popup de download
 
         if self.percent == 100:
             self.change_label("Download complete")
-            sleep(1)
+            sleep(0.5)
             self.close()
 
     def change_label(self, txt):  # Troca o texto do dialog

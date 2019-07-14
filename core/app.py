@@ -4,7 +4,7 @@ from os.path import expanduser
 from shutil import copy2
 from subprocess import run
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QStandardItem, QStandardItemModel, QIcon
+from PyQt5.QtGui import QStandardItem, QStandardItemModel, QIcon, QPixmap
 from PyQt5.QtWidgets import QDesktopWidget, QFileDialog, QAbstractItemView, QMenu
 
 from config.json_handler import get_obj_value, write_folder
@@ -34,11 +34,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.roms_path = []  # caminho das roms carregadas pelo list_roms
         self.roms = []  # nomes das roms
         self.select_game = ""  # rom selecionada
-        self.model = None  # modelo dos items da lista
+        self.model = QStandardItemModel(self.listGamesbox)  # modelo dos items da lista
         self.default_emulator_config = EmulatorConfigs("Zsnes")
         self.emulators_list = get_obj_value("emulators")
 
-        self.dwnl_dialog = DownloadDialog(self.roms, parent=self)  # Caixa popup de download
+        self.dwnl_dialog = None  # Caixa popup de download
         self.emu_dialog = None  # Caixa popup de configurações do emulador
 
         # icone
@@ -67,8 +67,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         ctx_menu = QMenu(self)
         ctx_menu.addAction("Run")
         ctx_menu.addSeparator()
+
         for emulator in self.emulators_list:
             ctx_menu.addAction(f"Run with {emulator}")
+
         ctx_menu.triggered.connect(self.ctx_menu_click)
         ctx_menu.exec_(self.mapToGlobal(event.pos()))
 
@@ -85,7 +87,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.emu_dialog.exec_()
 
     def download_game_covers(self):  # Requisita o download de cada capa da rom
-        self.dwnl_dialog.set_roms(self.roms)
+
+        self.dwnl_dialog = DownloadDialog(self.roms, parent=self)
         self.dwnl_dialog.start_download()
         self.update_listbox()
 
@@ -149,15 +152,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         for item in self.roms:
             img_file_path = ROOT_DIR + "/covers/" + format_gamename(item)
 
-            if exists(img_file_path):
-                game_icon = QIcon(img_file_path)
+            if exists(img_file_path):  # Caution QIcon can cause memory leak
+                game_icon = QIcon(QPixmap(img_file_path))
             else:
-                game_icon = QIcon(ROOT_DIR + "/" + "covers/none.png")
+                game_icon = QIcon(QPixmap(ROOT_DIR + "/" + "covers/none.png"))
 
             game = QStandardItem(game_icon, item)
             self.model.appendRow(game)
         self.model.sort(Qt.AscendingOrder)
-
         self.listGamesbox.setModel(self.model)
 
     def update_listbox(self):  # da um update das roms no listbox
