@@ -5,7 +5,7 @@ from shutil import copy2
 from subprocess import run
 from PyQt5.QtCore import Qt, QFile, QTextStream
 from PyQt5.QtGui import QStandardItem, QStandardItemModel, QIcon, QPixmap
-from PyQt5.QtWidgets import QDesktopWidget, QFileDialog, QAbstractItemView, QMenu
+from PyQt5.QtWidgets import QDesktopWidget, QFileDialog, QAbstractItemView, QMenu, QAction
 
 from config.json_handler import get_obj_value, write_folder
 from downloader.downloads_app import DownloadDialog
@@ -44,6 +44,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.dwnl_dialog = None  # Caixa popup de download
         self.emu_dialog = None  # Caixa popup de configurações do emulador
         self.theme_dialog = None
+        self.ctx_menu = MainCtxMenu(self.play_game, parent=self.listGamesbox)  # Menu de botão direito
 
         # icone
         self.app_icon = QtGui.QIcon()
@@ -62,6 +63,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.btReload.clicked.connect(self.update_listbox)  # botao de recarregar
         self.listGamesbox.clicked.connect(self.game_selected)  # seletor de games
         self.listGamesbox.pressed.connect(self.game_selected)
+        self.listGamesbox.customContextMenuRequested.connect(self.ctx_menu.show_menu)
 
         # chamadas de função
         QtCore.QTimer.singleShot(50, self.load_folder)  # carrega informações do json
@@ -85,25 +87,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.theme_dialog = ThemeConfigDialog(parent=self)
         self.theme_dialog.exec_()
         self.change_theme()
-
-    def contextMenuEvent(self, event):  # Função do menu de click direito
-        ctx_menu = QMenu(self)
-        ctx_menu.addAction("Run")
-        ctx_menu.addSeparator()
-
-        for emulator in self.emulators_list:
-            ctx_menu.addAction(f"Run with {emulator}")
-
-        ctx_menu.triggered.connect(self.ctx_menu_click)
-        ctx_menu.exec_(self.mapToGlobal(event.pos()))
-
-    def ctx_menu_click(self, action):  # Evento acionado quando uma opção do ctxmenu é pressionada
-        # Precisa ser melhorado para funcinar de forma mais generalizada
-        action_tag = action.text()
-        swich_case = {"Run": "Default", "Run with Zsnes": "Zsnes",
-                      "Run with Higan": "Higan", "Run with Snes9x": "Snes9x",
-                      "Run with Custom": "Custom"}
-        self.play_game(emulator=swich_case[action_tag])
 
     def configurate_emulator(self):  # Abre a janela de configurações do emulador
         self.emu_dialog = EmuConfigDialog(parent=self)
@@ -132,7 +115,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             game = self.games_folder + "/" + self.select_game
             run(f"{run_command} '{game}'", shell=True)
 
-    def create_img_dir(self):  # cria o diretorio dascovers somente se não exixtir
+    def create_img_dir(self):  # cria o diretorio das covers somente se não exixtir
         try:
             mkdir(self.imgs_folder)
         except FileExistsError:
@@ -203,6 +186,32 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         qr.moveCenter(cp)
         # top left of rectangle becomes top left of window centering it
         self.move(qr.topLeft())
+
+
+class MainCtxMenu(QMenu):  # Classe do menu de botão direito
+    def __init__(self, play_function,  parent=None):
+        super().__init__(parent)
+        self.parent = parent
+
+        # actions
+        self.action_run = QAction("Run")
+        self.action_zsnes = QAction("Run with Zsnes")
+        self.action_higan = QAction("Run with Higan")
+        self.action_custom = QAction("Run with Custom")
+        self.action_list = [self.action_zsnes, self.action_higan, self.action_custom]
+
+        self.addAction(self.action_run)
+        self.addSeparator()
+        self.addActions(self.action_list)
+
+        # trigers
+        self.action_run.triggered.connect(lambda: play_function("Default"))
+        self.action_zsnes.triggered.connect(lambda: play_function("Zsnes"))
+        self.action_higan.triggered.connect(lambda: play_function("Higan"))
+        self.action_custom.triggered.connect(lambda: play_function("Custom"))
+
+    def show_menu(self, pos):  # Execute the menu
+        self.exec_(self.parent.mapToGlobal(pos))
 
 
 def run_app():

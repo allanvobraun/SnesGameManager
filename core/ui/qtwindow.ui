@@ -16,6 +16,9 @@
     <height>16777215</height>
    </size>
   </property>
+  <property name="contextMenuPolicy">
+   <enum>Qt::NoContextMenu</enum>
+  </property>
   <property name="windowTitle">
    <string>Snes games manager</string>
   </property>
@@ -28,6 +31,9 @@
         <width>16777215</width>
         <height>16777215</height>
        </size>
+      </property>
+      <property name="contextMenuPolicy">
+       <enum>Qt::CustomContextMenu</enum>
       </property>
       <property name="autoFillBackground">
        <bool>false</bool>
