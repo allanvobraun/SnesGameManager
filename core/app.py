@@ -3,15 +3,18 @@ from os import mkdir
 from os.path import expanduser
 from shutil import copy2
 from subprocess import run
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QFile, QTextStream
 from PyQt5.QtGui import QStandardItem, QStandardItemModel, QIcon, QPixmap
 from PyQt5.QtWidgets import QDesktopWidget, QFileDialog, QAbstractItemView, QMenu
 
 from config.json_handler import get_obj_value, write_folder
 from downloader.downloads_app import DownloadDialog
-from config.emuConfig_app import EmuConfigDialog, EmulatorConfigs
+from config.emuConfig_app import EmuConfigDialog
+from config.themeConfig_app import ThemeConfigDialog
+from config.settings import EmulatorConfigs, ThemeConfigs
 from core.ui.qtwindow import *
 from downloader.format_download import *
+from themes.breeze import breeze_resources
 
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
@@ -40,6 +43,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.dwnl_dialog = None  # Caixa popup de download
         self.emu_dialog = None  # Caixa popup de configurações do emulador
+        self.theme_dialog = None
 
         # icone
         self.app_icon = QtGui.QIcon()
@@ -54,6 +58,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionOpen_roms_folder.triggered.connect(self.get_folder)  # ação para abrir o folder
         self.actionDownload_Game_Covers.triggered.connect(self.download_game_covers)  # baixar as capas
         self.actionEmulator_config.triggered.connect(self.configurate_emulator)  # configurações do emulador
+        self.actionChange_Theme.triggered.connect(self.configurate_theme)
         self.btReload.clicked.connect(self.update_listbox)  # botao de recarregar
         self.listGamesbox.clicked.connect(self.game_selected)  # seletor de games
         self.listGamesbox.pressed.connect(self.game_selected)
@@ -62,6 +67,24 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         QtCore.QTimer.singleShot(50, self.load_folder)  # carrega informações do json
         QtCore.QTimer.singleShot(50, self.create_img_dir)  # cria diretorio
         QtCore.QTimer.singleShot(50, self.copy_df_img)  # copia a imagem padrão para o diretorio
+
+        self.change_theme()
+
+    def change_theme(self):  # Muda o tema padrão
+        main_theme = get_obj_value("theme_config", "Main_theme")
+        file_name = ThemeConfigs(main_theme).file
+        if file_name is not None:
+            file = QFile(file_name)
+            file.open(QFile.ReadOnly | QFile.Text)
+            stream = QTextStream(file)
+            self.setStyleSheet(stream.readAll())
+        else:
+            self.setStyleSheet("")
+
+    def configurate_theme(self):  # Abre a janela de configurações do emulador
+        self.theme_dialog = ThemeConfigDialog(parent=self)
+        self.theme_dialog.exec_()
+        self.change_theme()
 
     def contextMenuEvent(self, event):  # Função do menu de click direito
         ctx_menu = QMenu(self)
@@ -143,9 +166,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.roms = path_to_roms(self.roms_path)  # salva somente o nome das roms
 
-        # print(self.roms_path)
-        # print(self.roms)
-
     def display_listing_games(self):  # Coloca os games da pasta no listGamesbox
         self.model = QStandardItemModel(self.listGamesbox)
 
@@ -183,12 +203,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         qr.moveCenter(cp)
         # top left of rectangle becomes top left of window centering it
         self.move(qr.topLeft())
-
-# if __name__ == "__main__":
-#     my_app = QtWidgets.QApplication([])
-#     window = MainWindow()
-#     window.show()
-#     my_app.exec_()
 
 
 def run_app():

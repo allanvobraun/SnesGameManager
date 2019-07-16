@@ -68,6 +68,12 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="maximumSize">
+         <size>
+          <width>84</width>
+          <height>16777215</height>
+         </size>
+        </property>
         <property name="text">
          <string>Play</string>
         </property>
@@ -80,6 +86,12 @@
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>84</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="text">
          <string>Reload List</string>
@@ -117,6 +129,7 @@
      <string>Settings</string>
     </property>
     <addaction name="actionEmulator_config"/>
+    <addaction name="actionChange_Theme"/>
    </widget>
    <addaction name="menuOp_es"/>
    <addaction name="menuFunctions"/>
@@ -138,7 +151,12 @@
   </action>
   <action name="actionEmulator_config">
    <property name="text">
-    <string>Emulator config</string>
+    <string>Emulator Configuration</string>
+   </property>
+  </action>
+  <action name="actionChange_Theme">
+   <property name="text">
+    <string>Change Theme</string>
    </property>
   </action>
  </widget>

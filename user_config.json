@@ -1,11 +1,32 @@
 {
-  "roms_path": "",
+  "roms_path": "/home/allan/snes",
   "emulators": [
     "Zsnes",
     "Higan",
     "Snes9x",
     "Custom"
   ],
+  "theme_config": {
+    "Default": {
+      "source": null,
+      "image": "resources/Default.png",
+      "default_theme": true,
+      "file": null
+    },
+    "Breeze_light": {
+      "source": "https://github.com/Alexhuszagh/BreezeStyleSheets",
+      "image": "resources/Breeze_light.png",
+      "default_theme": false,
+      "file": ":/light.qss"
+    },
+    "Breeze_dark": {
+      "source": "https://github.com/Alexhuszagh/BreezeStyleSheets",
+      "image": "resources/Breeze_dark.png",
+      "default_theme": false,
+      "file": ":/dark.qss"
+    },
+    "Main_theme": "Default"
+  },
   "emulators_config": {
     "Zsnes": {
       "default_command": "zsnes",

@@ -11,6 +11,13 @@ def write(data):  # Sobrescreve as alterações  no json
         dump(data, json_file, indent=2)
 
 
+def write_config(config, new_config):
+    with open(f'{ROOT_DIR}/user_config.json', "r") as json_file:
+        data = load(json_file)
+        data[config] = new_config
+    write(data)
+
+
 def write_emulator_config(emulator, new_data):
     with open(f'{ROOT_DIR}/user_config.json', "r") as json_file:
         data = load(json_file)

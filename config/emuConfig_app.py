@@ -1,10 +1,10 @@
 from PyQt5.QtWidgets import QDialog
-from config.json_handler import write_command, get_obj_value, write_emulator_config
+from config.json_handler import get_obj_value
 from config.ui.emuConfig_dialog import *
-from main import ROOT_DIR
+from config.settings import EmulatorConfigs
 
 
-class EmuConfigDialog(QDialog, Ui_emuDialog):  # Classe do popup de download
+class EmuConfigDialog(QDialog, Ui_emuDialog):  # Classe do popup de configurações
     def __init__(self, parent=None):
         QDialog.__init__(self, parent)
         self.setupUi(self)
@@ -44,7 +44,7 @@ class EmuConfigDialog(QDialog, Ui_emuDialog):  # Classe do popup de download
 
     def apply_changes(self):  # Aplica as configurações de cada emulador e salva no json
         for obj in self.emulators_configurations.values():
-            obj.save_to_json()
+            obj.save_configs()
         self.close()
 
     def check_event(self):  # Quando a checkbox mudar de estado mude o estado de read-only
@@ -94,62 +94,6 @@ class EmuConfigDialog(QDialog, Ui_emuDialog):  # Classe do popup de download
         for emulator in self.emulators_configurations.values():
             emulator.default_emulator = False
         self.current_config.default_emulator = True
-
-
-class EmulatorConfigs:  # Classe que carrega e salva as configurações de cada emulador do json para a memória
-    def __init__(self, emulator):
-        self.json_obj = get_obj_value("emulators_config", emulator)  # carrega do json
-
-        self.emulator = emulator  # nome do emulador
-        self._default_command = self.json_obj["default_command"]  # comando padrão para rodar os jogos
-        self._custom_command = self.json_obj["custom_command"]  # comando personalizado
-        self._use_default_command = self.json_obj["use_default_command"]  # booleano
-        self._default_emulator = self.json_obj["default_emulator"]  # booleano, este é o emulador padrão?
-        self._actual_command = self.default_command if self.use_default_command else self.custom_command
-
-    def save_to_json(self):  # salva as configs no json
-        data_dict = {
-            "default_command": self.default_command,
-            "custom_command": self.custom_command,
-            "use_default_command": self.use_default_command,
-            "default_emulator": self.default_emulator}
-        write_emulator_config(self.emulator, data_dict)
-
-    @property
-    def use_default_command(self):
-        return self._use_default_command
-
-    @property
-    def actual_command(self):
-        return self._actual_command
-
-    @property
-    def custom_command(self):
-        return self._custom_command
-
-    @property
-    def default_command(self):
-        return self._default_command
-
-    @property
-    def default_emulator(self):
-        return self._default_emulator
-
-    @default_command.setter
-    def default_command(self, value):
-        self._default_command = value
-
-    @custom_command.setter
-    def custom_command(self, value):
-        self._custom_command = value
-
-    @use_default_command.setter
-    def use_default_command(self, value):
-        self._use_default_command = value
-
-    @default_emulator.setter
-    def default_emulator(self, value):
-        self._default_emulator = value
 
 
 if __name__ == '__main__':
