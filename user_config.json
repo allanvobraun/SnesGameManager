@@ -1,5 +1,5 @@
 {
-  "roms_path": "/home/allan/snes",
+  "roms_path": "",
   "emulators": [
     "Zsnes",
     "Higan",
