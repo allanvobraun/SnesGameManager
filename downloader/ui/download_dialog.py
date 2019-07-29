@@ -27,7 +27,7 @@ class Ui_DownloadDialog(object):
         self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel)
         self.buttonBox.setObjectName("buttonBox")
         self.label = QtWidgets.QLabel(DownloadDialog)
-        self.label.setGeometry(QtCore.QRect(80, 30, 201, 51))
+        self.label.setGeometry(QtCore.QRect(73, 20, 221, 51))
         font = QtGui.QFont()
         font.setPointSize(15)
         self.label.setFont(font)

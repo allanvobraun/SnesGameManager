@@ -95,9 +95,14 @@
         </property>
         <property name="maximumSize">
          <size>
-          <width>84</width>
+          <width>90</width>
           <height>16777215</height>
          </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>11</pointsize>
+         </font>
         </property>
         <property name="text">
          <string>Reload List</string>

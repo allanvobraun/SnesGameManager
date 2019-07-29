@@ -1,13 +1,12 @@
 import glob  # Usado para pegar o caminho do arquivo mais facilmente
-from os import mkdir
 from os.path import expanduser
-from shutil import copy2
-from subprocess import run
+from subprocess import run, CalledProcessError
 from PyQt5.QtCore import Qt, QFile, QTextStream
+from PyQt5.QtCore import QStandardPaths as Qpath
 from PyQt5.QtGui import QStandardItem, QStandardItemModel, QIcon, QPixmap
 from PyQt5.QtWidgets import QDesktopWidget, QFileDialog, QAbstractItemView, QMenu, QAction
 
-from config.json_handler import get_obj_value, write_folder
+from config.json_handler import get_obj_value, write_folder, copy_json
 from downloader.downloads_app import DownloadDialog
 from config.emuConfig_app import EmuConfigDialog
 from config.themeConfig_app import ThemeConfigDialog
@@ -26,12 +25,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.resize(750, 450)
         self.center()
 
+        copy_json()  # carrega informações do json
         # atributos
 
         # tipos de arquivos suportados pelo emulador
         self.roms_extensions = ("7z", "bin", "bs", "fig", "mgd", "sfc", "smc", "swc", "zip")
         self.root = ROOT_DIR  # pasta raiz do projeto
-        self.imgs_folder = self.root + "/" + "covers"
+        self.user_folder = Qpath.writableLocation(Qpath.AppConfigLocation)  # User configuration folder
+        self.imgs_folder = self.user_folder + "/" + "covers"  # Folder were the images cover are stored
         self.resources_folder = f"{ROOT_DIR}/resources"
         self.games_folder = ""
         self.roms_path = []  # caminho das roms carregadas pelo list_roms
@@ -66,11 +67,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.listGamesbox.customContextMenuRequested.connect(self.ctx_menu.show_menu)
 
         # chamadas de função
+        self.copy_covers()
         QtCore.QTimer.singleShot(50, self.load_folder)  # carrega informações do json
-        QtCore.QTimer.singleShot(50, self.create_img_dir)  # cria diretorio
-        QtCore.QTimer.singleShot(50, self.copy_df_img)  # copia a imagem padrão para o diretorio
 
         self.change_theme()
+
+    def copy_covers(self):  # Create the covers folder inside user configuration folder
+        print(f"Creating covers folder in {self.imgs_folder}")
+        run(f"cp -n -r {ROOT_DIR}/covers {self.user_folder}", shell=True)
 
     def change_theme(self):  # Muda o tema padrão
         main_theme = get_obj_value("theme_config", "Main_theme")
@@ -113,18 +117,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 run_command = EmulatorConfigs(emulator).actual_command
 
             game = self.games_folder + "/" + self.select_game
-            run(f"{run_command} '{game}'", shell=True)
-
-    def create_img_dir(self):  # cria o diretorio das covers somente se não exixtir
-        try:
-            mkdir(self.imgs_folder)
-        except FileExistsError:
-            pass
-
-    def copy_df_img(self):  # copia imagem padrão de capa para o diretorio de imagens
-        file_path = f"{self.resources_folder}/none.png"
-        copy2(file_path, self.imgs_folder)
-        self.update_listbox()
+            # Special command to run from flatpack sandbox
+            try:
+                run(f"flatpak-spawn --verbose --host {run_command} '{game}'", shell=True).check_returncode()
+            except CalledProcessError:
+                run(f"{run_command} '{game}'", shell=True)
 
     def save_folder(self):  # salva o caminho da pasta de roms
         write_folder(self.games_folder)
@@ -153,12 +150,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.model = QStandardItemModel(self.listGamesbox)
 
         for item in self.roms:
-            img_file_path = ROOT_DIR + "/covers/" + format_gamename(item)
+            img_file_path = self.imgs_folder + "/" + format_gamename(item)
 
             if exists(img_file_path):  # Caution QIcon can cause memory leak
                 game_icon = QIcon(QPixmap(img_file_path))
             else:
-                game_icon = QIcon(QPixmap(ROOT_DIR + "/" + "covers/none.png"))
+                game_icon = QIcon(QPixmap(ROOT_DIR + "/" + "resources/none.png"))
 
             game = QStandardItem(game_icon, item)
             self.model.appendRow(game)
@@ -172,7 +169,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.display_listing_games()
 
     def game_selected(self, idx):  # identifica o game selecionado da lista
-        print("selecionado")
+        print("selectd")
         # item = idx.row()
         self.select_game = self.model.itemFromIndex(idx).text()
         print(self.select_game)
