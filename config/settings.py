@@ -1,4 +1,5 @@
 from config.json_handler import get_obj_value, write_config
+from os.path import basename
 
 """
 Classes for change and consult configurations from the Json file
@@ -25,52 +26,35 @@ class EmulatorConfigs(Config):  # Classe que carrega e salva as configurações 
         self.emulator_obj = self.json_obj[emulator]
 
         self.emulator = emulator  # nome do emulador
-        self._default_command = self.emulator_obj["default_command"]  # comando padrão para rodar os jogos
-        self._custom_command = self.emulator_obj["custom_command"]  # comando personalizado
-        self._use_default_command = self.emulator_obj["use_default_command"]  # booleano
+        self._exe_path = self.emulator_obj["exe_path"]  # Emultor executable path
+        self._exe_name = basename(self._exe_path)  # Executable name
+
         self._default_emulator = self.emulator_obj["default_emulator"]  # booleano, este é o emulador padrão?
         # comando a ser utilizado
-        self._actual_command = self.default_command if self.use_default_command else self.custom_command
 
     def save_configs(self):  # salva as configurações
         data_dict = {
-                "default_command": self.default_command,
-                "custom_command": self.custom_command,
-                "use_default_command": self.use_default_command,
+                "exe_path": self.exe_path,
                 "default_emulator": self.default_emulator}
         self.overwrite_save(self.emulator, data_dict)
 
     @property
-    def use_default_command(self):
-        return self._use_default_command
+    def exe_path(self):
+        return self._exe_path
 
     @property
-    def actual_command(self):
-        return self._actual_command
-
-    @property
-    def custom_command(self):
-        return self._custom_command
-
-    @property
-    def default_command(self):
-        return self._default_command
+    def exe_name(self):
+        self._exe_name = basename(self.exe_path)
+        return self._exe_name
 
     @property
     def default_emulator(self):
         return self._default_emulator
 
-    @default_command.setter
-    def default_command(self, value):
-        self._default_command = value
-
-    @custom_command.setter
-    def custom_command(self, value):
-        self._custom_command = value
-
-    @use_default_command.setter
-    def use_default_command(self, value):
-        self._use_default_command = value
+    @exe_path.setter
+    def exe_path(self, value):
+        self._exe_path = value
+        self._exe_name = basename(self.exe_path)
 
     @default_emulator.setter
     def default_emulator(self, value):

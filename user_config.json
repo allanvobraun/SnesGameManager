@@ -29,27 +29,19 @@
   },
   "emulators_config": {
     "Zsnes": {
-      "default_command": "zsnes",
-      "custom_command": "",
-      "use_default_command": true,
+      "exe_path": "",
       "default_emulator": true
     },
     "Higan": {
-      "default_command": "higan",
-      "custom_command": "",
-      "use_default_command": true,
+      "exe_path": "",
       "default_emulator": false
     },
     "Snes9x": {
-      "default_command": "snes9x-gtk",
-      "custom_command": "",
-      "use_default_command": true,
+      "exe_path": "",
       "default_emulator": false
     },
     "Custom": {
-      "default_command": "",
-      "custom_command": "",
-      "use_default_command": false,
+      "exe_path": "",
       "default_emulator": false
     }
   }
