@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/allan/PycharmProjects/pyqt/config/ui/themeConfig_dialog.ui'
+# Form implementation generated from reading ui file 'C:\Users\Allan\Desktop\Pastas\SnesGameManager-windows\config\ui\themeConfig_dialog.ui'
 #
-# Created by: PyQt5 UI code generator 5.9.2
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_themeDialog(object):
     def setupUi(self, themeDialog):
@@ -19,6 +21,10 @@ class Ui_themeDialog(object):
         themeDialog.setSizePolicy(sizePolicy)
         themeDialog.setMinimumSize(QtCore.QSize(0, 0))
         themeDialog.setMaximumSize(QtCore.QSize(1000, 1000))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(11)
+        themeDialog.setFont(font)
         themeDialog.setLayoutDirection(QtCore.Qt.LeftToRight)
         themeDialog.setSizeGripEnabled(False)
         self.verticalLayout = QtWidgets.QVBoxLayout(themeDialog)
@@ -134,4 +140,3 @@ if __name__ == "__main__":
     ui.setupUi(themeDialog)
     themeDialog.show()
     sys.exit(app.exec_())
-

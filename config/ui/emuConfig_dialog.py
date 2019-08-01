@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/allan/PycharmProjects/pyqt/config/ui/emuConfig_dialog.ui'
+# Form implementation generated from reading ui file 'C:\Users\Allan\Desktop\Pastas\SnesGameManager-windows\config\ui\emuConfig_dialog.ui'
 #
-# Created by: PyQt5 UI code generator 5.9.2
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_emuDialog(object):
     def setupUi(self, emuDialog):
@@ -19,6 +21,10 @@ class Ui_emuDialog(object):
         emuDialog.setSizePolicy(sizePolicy)
         emuDialog.setMinimumSize(QtCore.QSize(406, 220))
         emuDialog.setMaximumSize(QtCore.QSize(406, 220))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(11)
+        emuDialog.setFont(font)
         emuDialog.setLayoutDirection(QtCore.Qt.LeftToRight)
         emuDialog.setSizeGripEnabled(False)
         self.verticalLayout = QtWidgets.QVBoxLayout(emuDialog)
@@ -165,4 +171,3 @@ if __name__ == "__main__":
     ui.setupUi(emuDialog)
     emuDialog.show()
     sys.exit(app.exec_())
-

@@ -29,7 +29,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # atributos
 
         # tipos de arquivos suportados pelo emulador
-        self.roms_extensions = ("7z", "bin", "bs", "fig", "mgd", "sfc", "smc", "swc", "zip")
+        self.roms_extensions = ("7z", "bs", "fig", "mgd", "sfc", "smc", "swc", "zip")
         self.root = ROOT_DIR  # pasta raiz do projeto
         self.imgs_folder = self.root + "/" + "covers"
         self.resources_folder = f"{ROOT_DIR}/resources"
@@ -67,8 +67,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         # chamadas de função
         QtCore.QTimer.singleShot(50, self.load_folder)  # carrega informações do json
-        QtCore.QTimer.singleShot(50, self.create_img_dir)  # cria diretorio
-        QtCore.QTimer.singleShot(50, self.copy_df_img)  # copia a imagem padrão para o diretorio
 
         self.change_theme()
 
@@ -108,23 +106,15 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.select_game != "":
             if emulator == "Default":
                 self.update_default_emulator()
-                run_command = self.default_emulator_config.actual_command
+                emulator_path = self.default_emulator_config.exe_path
             else:
-                run_command = EmulatorConfigs(emulator).actual_command
+                emulator_path = EmulatorConfigs(emulator).exe_path
 
             game = self.games_folder + "/" + self.select_game
-            run(f"{run_command} '{game}'", shell=True)
+            command = f"{emulator_path} \"{game}\""
+            print(command)
+            run(command, shell=True)
 
-    def create_img_dir(self):  # cria o diretorio das covers somente se não exixtir
-        try:
-            mkdir(self.imgs_folder)
-        except FileExistsError:
-            pass
-
-    def copy_df_img(self):  # copia imagem padrão de capa para o diretorio de imagens
-        file_path = f"{self.resources_folder}/none.png"
-        copy2(file_path, self.imgs_folder)
-        self.update_listbox()
 
     def save_folder(self):  # salva o caminho da pasta de roms
         write_folder(self.games_folder)
@@ -158,7 +148,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             if exists(img_file_path):  # Caution QIcon can cause memory leak
                 game_icon = QIcon(QPixmap(img_file_path))
             else:
-                game_icon = QIcon(QPixmap(ROOT_DIR + "/" + "covers/none.png"))
+                game_icon = QIcon(QPixmap(self.resources_folder + "/none.png"))
 
             game = QStandardItem(game_icon, item)
             self.model.appendRow(game)

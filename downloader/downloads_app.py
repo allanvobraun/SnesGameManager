@@ -58,14 +58,8 @@ class DownloadDialog(QDialog, Ui_DownloadDialog):  # Classe do popup de download
         self.th = DowloadThread(self.roms)
 
         # conexões
-        self.buttonBox.rejected.connect(self.cancel)
+        self.btCancel.clicked.connect(self.cancel)
         self.th.flare.downloaded.connect(self.add_progress)
-
-    def closeEvent(self, *args, **kwargs):  # evento para fechar o dialog
-        super(QDialog, self).closeEvent(*args, **kwargs)
-        self.cancel()
-        self.close()
-        del self
 
     def start_download(self):  # começa a fazer o downlaod
         self.show()
@@ -73,6 +67,7 @@ class DownloadDialog(QDialog, Ui_DownloadDialog):  # Classe do popup de download
 
     def cancel(self):  # quebra o processo de download
         self.th.break_thread()
+        self.close()
 
     def add_progress(self):  # Lida com a barra de progresso
         self.completed += 1

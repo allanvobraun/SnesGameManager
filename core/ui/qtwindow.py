@@ -1,18 +1,24 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/allan/PycharmProjects/pyqt/core/ui/qtwindow.ui'
+# Form implementation generated from reading ui file 'C:\Users\Allan\Desktop\Pastas\SnesGameManager-windows\core\ui\qtwindow.ui'
 #
-# Created by: PyQt5 UI code generator 5.9.2
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(538, 417)
         MainWindow.setMaximumSize(QtCore.QSize(750, 16777215))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(11)
+        MainWindow.setFont(font)
         MainWindow.setContextMenuPolicy(QtCore.Qt.NoContextMenu)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -22,6 +28,9 @@ class Ui_MainWindow(object):
         self.listGamesbox.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.listGamesbox.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.listGamesbox.setAutoFillBackground(False)
+        self.listGamesbox.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.listGamesbox.setLineWidth(4)
+        self.listGamesbox.setMidLineWidth(0)
         self.listGamesbox.setIconSize(QtCore.QSize(120, 100))
         self.listGamesbox.setResizeMode(QtWidgets.QListView.Adjust)
         self.listGamesbox.setViewMode(QtWidgets.QListView.ListMode)
@@ -48,12 +57,13 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.btReload.sizePolicy().hasHeightForWidth())
         self.btReload.setSizePolicy(sizePolicy)
         self.btReload.setMaximumSize(QtCore.QSize(84, 16777215))
+        self.btReload.setFlat(False)
         self.btReload.setObjectName("btReload")
         self.horizontalLayout.addWidget(self.btReload)
         self.verticalLayout.addLayout(self.horizontalLayout)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 538, 22))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 538, 23))
         self.menubar.setObjectName("menubar")
         self.menuOp_es = QtWidgets.QMenu(self.menubar)
         self.menuOp_es.setObjectName("menuOp_es")
@@ -108,4 +118,3 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
-

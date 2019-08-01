@@ -13,12 +13,6 @@
       "default_theme": true,
       "file": null
     },
-    "Breeze_light": {
-      "source": "https://github.com/Alexhuszagh/BreezeStyleSheets",
-      "image": "resources/Breeze_light.png",
-      "default_theme": false,
-      "file": ":/light.qss"
-    },
     "Breeze_dark": {
       "source": "https://github.com/Alexhuszagh/BreezeStyleSheets",
       "image": "resources/Breeze_dark.png",

@@ -1,5 +1,5 @@
 import requests
-from os.path import exists
+from os.path import exists, basename
 import os
 from main import ROOT_DIR
 
@@ -12,7 +12,7 @@ from main import ROOT_DIR
 def path_to_roms(rom_list):  # Função para extrair os nomes das roms de cada caminho
     extracted_names = []
     for path in rom_list:
-        name = path.split("/")[-1]
+        name = basename(path)
         extracted_names.append(name)
     return extracted_names
 

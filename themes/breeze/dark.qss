@@ -325,14 +325,14 @@ QAbstractItemView
 {
     alternate-background-color: #31363b;
     color: #eff0f1;
-    border: 0.1ex solid 3A3939;
+    border: 0.1ex solid #3A3939;
     border-radius: 0.2ex;
 }
 
 QWidget:focus,
 QMenuBar:focus
 {
-    border: 0.1ex solid #3daee9;
+    border: 0.5ex solid #3daee9;
 }
 
 QTabWidget:focus,
@@ -450,10 +450,10 @@ QScrollBar::sub-page:horizontal
 QScrollBar:vertical
 {
     background-color: #2A2929;
-    width: 1.5ex;
+    width: 3ex;
     margin: 1.5ex 0.3ex 1.5ex 0.3ex;
     border: 0.1ex transparent #2A2929;
-    border-radius: 0.4ex;
+    border-radius: 2ex;
 }
 
 QScrollBar::handle:vertical
@@ -488,8 +488,8 @@ QScrollBar::sub-line:vertical:on
 {
 
     border-image: url(:/dark/up_arrow.svg);
-    height: 1ex;
-    width: 1ex;
+    height: 3ex;
+    width: 3ex;
     subcontrol-position: top;
     subcontrol-origin: margin;
 }
@@ -633,11 +633,11 @@ QPushButton
 {
     color: #eff0f1;
     background-color: qlineargradient(x1: 0.5, y1: 0.5 x2: 0.5, y2: 1, stop: 0 #3b4045, stop: 0.5 #31363b);
-    border-width: 0.1ex;
+    border-width: 0.4ex;
     border-color: #76797c;
     border-style: solid;
     padding: 0.5ex;
-    border-radius: 0.2ex;
+    border-radius: 0.3ex;
     outline: none;
 }
 
@@ -1327,7 +1327,7 @@ QSlider::sub-page:vertical
 QToolButton
 {
     background-color: transparent;
-    border: 0.1ex solid #76797c;
+    border: 0.4ex solid #76797c;
     border-radius: 0.2ex;
     margin: 0.3ex;
     padding: 0.5ex;
@@ -1554,7 +1554,6 @@ QProgressBar:horizontal
     background-color: #626568;
     border: 0.1ex solid #31363b;
     border-radius: 0.3ex;
-    height: 0.5ex;
     text-align: right;
     margin-top: 0.5ex;
     margin-bottom: 0.5ex;
